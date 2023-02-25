@@ -141,6 +141,7 @@ Class MainWindow
                         Dim OriginFontName = FontName.Substring(SubLength)
                         If OriginFontStatistic.ContainsKey(OriginFontName) Then
                             Dict.Remove(PdfName.BaseFont)
+                            Dict.Remove(PdfName.FontDescriptor)
                             Dict.Put(PdfName.BaseFont, New PdfString(OriginFontName))
                         End If
                     End If
