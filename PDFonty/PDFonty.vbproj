@@ -19,4 +19,8 @@
     <Import Include="System.Windows.Shapes" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="itext7" Version="7.2.5" />
+  </ItemGroup>
+
 </Project>
