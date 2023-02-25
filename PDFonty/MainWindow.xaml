@@ -9,7 +9,7 @@
     <Grid>
         <Button x:Name="Open" Content="打开文件" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="FileName" Content="尚未选择文件" HorizontalAlignment="Left" Margin="67,7,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="Status" Content="就绪" VerticalAlignment="Top" Width="278" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+        <Label x:Name="Status" Content="就绪" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
         <Button x:Name="AntiAcrobat" Content="反Acrobat字体唯一命名" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
         <Label Content="Acrobat的字体唯一命名导致PDF内出现大量重复字体，本功能可用系统字体重新替换节约体积" HorizontalAlignment="Left" Margin="145,35,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="AcroFontLength" HorizontalAlignment="Left" Margin="133,67,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="57"/>

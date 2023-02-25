@@ -83,12 +83,30 @@ Class MainWindow
             CurrentObjectNum += 1
         End While
         Status.Content = "统计完成，开始施工"
-        Dim ToReplaceFonts
+        '只出现一次的就没必要施工了
+        Dim ToReplaceFont = ""
         For Each Font In OriginFontStatistic
-            If Font.Value > 1 Then
-
+            If Font.Value = 1 Then
+                OriginFontStatistic.Remove(Font.Key)
+            Else
+                ToReplaceFont += Font.Key + ","
             End If
         Next
+        If ToReplaceFont = "" Then
+            Status.Content = "没找到需要去重的字体，可能是参数不正确"
+            Return
+        End If
+        If OriginFontStatistic.Count > 100 Then
+            result = MessageBox.Show("去重后的字体似乎仍然有点多，还要继续吗？" + Environment.NewLine + "这种情况很可能是参数不正确，试试对照说明调节参数", "PDFonty", MessageBoxButtons.YesNo)
+            If Not result = System.Windows.Forms.DialogResult.Yes Then
+                Status.Content = "去重后的字体仍然很多，用户终止处理"
+                Return
+            End If
+        End If
+        result = MessageBox.Show("需要去重的字体包括：" + ToReplaceFont + Environment.NewLine + "确定继续？", "PDFonty", MessageBoxButtons.YesNo)
+        If Not result = System.Windows.Forms.DialogResult.Yes Then
+            Return
+        End If
         Status.Content = "处理完成"
     End Sub
 End Class
