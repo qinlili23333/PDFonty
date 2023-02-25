@@ -1,6 +1,7 @@
 ﻿Imports iText
 Imports System.Environment
 Imports Microsoft.Win32
+Imports System.IO
 Imports System.Windows.Forms
 Imports iText.Kernel.Pdf
 Imports Microsoft.VisualBasic.Logging
@@ -25,6 +26,24 @@ Class MainWindow
             ScanPDF()
         Else
             Status.Content = "没有选择文件"
+        End If
+    End Sub
+
+    Private Sub Save_Click(sender As Object, e As RoutedEventArgs) Handles Save.Click
+        Dim fd As New Windows.Forms.SaveFileDialog() With {
+                                .CheckPathExists = True,
+                                .Title = "选择一个PDF文件",
+                                .RestoreDirectory = True,
+                                .InitialDirectory = CurrentDirectory,
+                                .Filter = "PDF文件|*.pdf",
+                                .FileName = Path.GetFileName(CurrentFile)
+                                }
+        If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Dim Writer = New PdfWriter(fd.FileName)
+            Dim NewPdf = New PdfDocument(Writer)
+            PDFDocument.CopyPagesTo(1, PDFDocument.GetNumberOfPages, NewPdf)
+            NewPdf.Close()
+            Status.Content = "保存成功"
         End If
     End Sub
     Private Function ScanPDF()
@@ -107,6 +126,29 @@ Class MainWindow
         If Not result = System.Windows.Forms.DialogResult.Yes Then
             Return
         End If
+        CurrentObjectNum = 1
+        While CurrentObjectNum <= ObjectNum
+            Dim CurrentObject = PDFDocument.GetPdfObject(CurrentObjectNum)
+            If CurrentObject IsNot Nothing AndAlso CurrentObject.GetObjectType() = 3 Then
+                Dim Dict As PdfDictionary = CurrentObject
+                If Dict.GetAsName(PdfName.Type) Is PdfName.Font Then
+                    '得到原始的字体名称
+                    Dim FontName = Dict.GetAsName(PdfName.BaseFont).ToString()
+                    '格式化为标准字体名称
+                    FontName = FontName.Substring(FontName.IndexOf("+") + 1)
+                    Dim SubLength = Int32.Parse(AcroFontLength.Text)
+                    If FontName.Length > SubLength Then
+                        Dim OriginFontName = FontName.Substring(SubLength)
+                        If OriginFontStatistic.ContainsKey(OriginFontName) Then
+                            Dict.Remove(PdfName.BaseFont)
+                            Dict.Put(PdfName.BaseFont, New PdfString(OriginFontName))
+                        End If
+                    End If
+                End If
+            End If
+            CurrentObjectNum += 1
+        End While
         Status.Content = "处理完成"
     End Sub
+
 End Class
