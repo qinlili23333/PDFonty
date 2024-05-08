@@ -175,6 +175,7 @@ Class MainWindow
                     If FontName = OriginFont.Text Then
                         Dict.Remove(PdfName.BaseFont)
                         Dict.Remove(PdfName.FontDescriptor)
+                        Dict.Remove(PdfName.W)
                         Dict.Put(PdfName.BaseFont, New PdfName(NewFont.Text))
                         ReplaceCounter += 1
                     End If
@@ -275,6 +276,7 @@ Class MainWindow
                         BaseFont = New PdfName(Dict.GetAsName(PdfName.BaseFont).ToString().Substring(8))
                     End If
                     Dict.Put(PdfName.BaseFont, BaseFont)
+                    Dict.Remove(PdfName.CIDToGIDMap)
                     Dim fontDescriptor As PdfDictionary = Dict.GetAsDictionary(PdfName.FontDescriptor)
                     If fontDescriptor IsNot Nothing Then
                         fontDescriptor.Put(PdfName.FontName, BaseFont)
