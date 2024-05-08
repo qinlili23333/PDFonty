@@ -6,6 +6,8 @@ Imports System.Windows.Forms
 Imports iText.Kernel.Pdf
 Imports Microsoft.VisualBasic.Logging
 Imports System.Text.RegularExpressions
+Imports iText.IO.Font
+Imports iText.Kernel.Font
 
 Class MainWindow
     Dim CurrentFile As String = ""
@@ -158,8 +160,6 @@ Class MainWindow
             Return
         End If
         Status.Content = "正在替换字体"
-        Dim FontStatistic As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)
-        Dim OriginFontStatistic As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)
         Dim ObjectNum = PDFDocument.GetNumberOfPdfObjects
         Dim CurrentObjectNum As Integer = 1
         Dim ReplaceCounter As Integer = 0
@@ -175,7 +175,7 @@ Class MainWindow
                     If FontName = OriginFont.Text Then
                         Dict.Remove(PdfName.BaseFont)
                         Dict.Remove(PdfName.FontDescriptor)
-                        Dict.Put(PdfName.BaseFont, New PdfString(NewFont.Text))
+                        Dict.Put(PdfName.BaseFont, New PdfName(NewFont.Text))
                         ReplaceCounter += 1
                     End If
                 End If
@@ -186,6 +186,109 @@ Class MainWindow
             Status.Content = "替换" + ReplaceCounter.ToString + "处"
         Else
             Status.Content = "没有找到需要替换的字体"
+        End If
+    End Sub
+
+    Private Sub FixEncoding_Click(sender As Object, e As RoutedEventArgs) Handles FixEncoding.Click
+        If CurrentFile = "" Then
+            Status.Content = "未选择文件"
+            Return
+        End If
+        Status.Content = "正在修复编码"
+        Dim ObjectNum = PDFDocument.GetNumberOfPdfObjects
+        Dim CurrentObjectNum As Integer = 1
+        Dim ReplaceCounter As Integer = 0
+        While CurrentObjectNum <= ObjectNum
+            Dim CurrentObject = PDFDocument.GetPdfObject(CurrentObjectNum)
+            If CurrentObject IsNot Nothing AndAlso CurrentObject.GetObjectType() = 3 Then
+                Dim Dict As PdfDictionary = CurrentObject
+                If Dict.GetAsName(PdfName.Type) Is PdfName.Font Then
+                    Dim enc = Dict.GetAsName(PdfName.Encoding)
+                    Dict.Put(PdfName.Encoding, New PdfName(NewEncoding.Text))
+                    ReplaceCounter += 1
+                End If
+            End If
+            CurrentObjectNum += 1
+        End While
+        If ReplaceCounter > 0 Then
+            Status.Content = "修复" + ReplaceCounter.ToString + "处"
+        Else
+            Status.Content = "没有找到需要修复编码的字体"
+        End If
+    End Sub
+
+    Private Sub RebuildFont_Click(sender As Object, e As RoutedEventArgs) Handles RebuildFont.Click
+        If CurrentFile = "" Then
+            Status.Content = "未选择文件"
+            Return
+        End If
+        Status.Content = "正在处理字体"
+        Dim ObjectNum = PDFDocument.GetNumberOfPdfObjects
+        Dim CurrentObjectNum As Integer = 1
+        Dim ReplaceCounter As Integer = 0
+        While CurrentObjectNum <= ObjectNum
+            Dim CurrentObject = PDFDocument.GetPdfObject(CurrentObjectNum)
+            If CurrentObject IsNot Nothing AndAlso CurrentObject.GetObjectType() = 3 Then
+                Dim Dict As PdfDictionary = CurrentObject
+                If Dict.GetAsName(PdfName.Type) Is PdfName.Font AndAlso Dict.GetAsName(PdfName.BaseFont).ToString().IndexOf("+") > 0 Then
+                    Try
+                        '得到原始的字体名称
+                        Dim FontName = Dict.GetAsName(PdfName.BaseFont).ToString()
+                        '格式化为标准字体名称
+                        FontName = FontName.Substring(FontName.IndexOf("+") + 1)
+                        Dim Font = PDFDocument.GetFont(Dict)
+                        Dict.Remove(PdfName.BaseFont)
+                        Dict.Put(PdfName.BaseFont, Font.GetPdfObject)
+                        ReplaceCounter += 1
+                    Catch ex As Exception
+
+                    End Try
+                End If
+            End If
+            CurrentObjectNum += 1
+        End While
+        If ReplaceCounter > 0 Then
+            Status.Content = "修复" + ReplaceCounter.ToString + "处"
+        Else
+            Status.Content = "没有找到需要处理的字体"
+        End If
+    End Sub
+
+    Private Sub UnembedAll_Click(sender As Object, e As RoutedEventArgs) Handles UnembedAll.Click
+        If CurrentFile = "" Then
+            Status.Content = "未选择文件"
+            Return
+        End If
+        Status.Content = "正在处理字体"
+        Dim ObjectNum = PDFDocument.GetNumberOfPdfObjects
+        Dim CurrentObjectNum As Integer = 1
+        Dim ReplaceCounter As Integer = 0
+        While CurrentObjectNum <= ObjectNum
+            Dim CurrentObject = PDFDocument.GetPdfObject(CurrentObjectNum)
+            If CurrentObject IsNot Nothing AndAlso CurrentObject.GetObjectType() = 3 Then
+                Dim Dict As PdfDictionary = CurrentObject
+                If Dict.GetAsName(PdfName.Type) Is PdfName.Font AndAlso Dict.GetAsName(PdfName.BaseFont).ToString().IndexOf("+") > 0 Then
+                    Dim BaseFont As PdfName
+                    If AlsoReplaceFont.IsChecked Then
+                        BaseFont = New PdfName(NewFont.Text)
+                    Else
+                        BaseFont = New PdfName(Dict.GetAsName(PdfName.BaseFont).ToString().Substring(8))
+                    End If
+                    Dict.Put(PdfName.BaseFont, BaseFont)
+                    Dim fontDescriptor As PdfDictionary = Dict.GetAsDictionary(PdfName.FontDescriptor)
+                    If fontDescriptor IsNot Nothing Then
+                        fontDescriptor.Put(PdfName.FontName, BaseFont)
+                        fontDescriptor.Remove(PdfName.FontFile2)
+                    End If
+                    ReplaceCounter += 1
+                End If
+            End If
+            CurrentObjectNum += 1
+        End While
+        If ReplaceCounter > 0 Then
+            Status.Content = "取消" + ReplaceCounter.ToString + "个字体内嵌"
+        Else
+            Status.Content = "没有找到内嵌的字体"
         End If
     End Sub
 End Class

@@ -19,7 +19,14 @@
         <Button x:Name="FontReplace" Content="字体抽取" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="OriginFont" HorizontalAlignment="Left" Margin="67,95,0,0" TextWrapping="Wrap" Text="原始字体" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="NewFont" HorizontalAlignment="Left" Margin="192,95,0,0" TextWrapping="Wrap" Text="替换字体" VerticalAlignment="Top" Width="120"/>
-        <Label Content="内嵌字体有问题？那就把内嵌字体抽走吧" HorizontalAlignment="Left" Margin="312,91,0,0" VerticalAlignment="Top"/>
+        <Label Content="内嵌字体有问题？那就把内嵌字体抽走吧" HorizontalAlignment="Left" Margin="317,91,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="FixEncoding" Content="编码修复" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top"/>
+        <Label Content="解决显示乱码但复制正常" HorizontalAlignment="Left" Margin="195,116,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="NewEncoding" HorizontalAlignment="Left" Margin="67,120,0,0" TextWrapping="Wrap" Text="CP1252" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="RebuildFont" Content="字体重制" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top"/>
+        <Label Content="有时候能解决字体嵌入疑难杂症" HorizontalAlignment="Left" Margin="67,141,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="UnembedAll" Content="完全取消字体内嵌" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="AlsoReplaceFont" Content="同时替换字体" HorizontalAlignment="Left" Margin="116,171,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.196,-0.571"/>
 
     </Grid>
 </Window>
