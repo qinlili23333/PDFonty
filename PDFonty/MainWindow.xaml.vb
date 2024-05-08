@@ -11,7 +11,7 @@ Class MainWindow
     Dim CurrentFile As String = ""
     Dim PDFDocument As PdfDocument
     Private Sub Open_Click(sender As Object, e As RoutedEventArgs) Handles Open.Click
-        Dim fd As New Windows.Forms.OpenFileDialog() With {
+        Dim fd As New System.Windows.Forms.OpenFileDialog() With {
                                 .CheckFileExists = True,
                                 .CheckPathExists = True,
                                 .Title = "选择一个PDF文件",
@@ -20,7 +20,7 @@ Class MainWindow
                                 .InitialDirectory = CurrentDirectory,
                                 .Filter = "PDF文件|*.pdf"
                                 }
-        If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If fd.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             CurrentFile = fd.FileName
             FileName.Content = CurrentFile
             ScanPDF()
@@ -30,7 +30,7 @@ Class MainWindow
     End Sub
 
     Private Sub Save_Click(sender As Object, e As RoutedEventArgs) Handles Save.Click
-        Dim fd As New Windows.Forms.SaveFileDialog() With {
+        Dim fd As New System.Windows.Forms.SaveFileDialog() With {
                                 .CheckPathExists = True,
                                 .Title = "选择一个PDF文件",
                                 .RestoreDirectory = True,
@@ -38,7 +38,7 @@ Class MainWindow
                                 .Filter = "PDF文件|*.pdf",
                                 .FileName = Path.GetFileName(CurrentFile)
                                 }
-        If fd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If fd.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Dim Writer = New PdfWriter(fd.FileName)
             Dim NewPdf = New PdfDocument(Writer)
             PDFDocument.CopyPagesTo(1, PDFDocument.GetNumberOfPages, NewPdf)
@@ -152,4 +152,40 @@ Class MainWindow
         Status.Content = "处理完成"
     End Sub
 
+    Private Sub FontReplace_Click(sender As Object, e As RoutedEventArgs) Handles FontReplace.Click
+        If CurrentFile = "" Then
+            Status.Content = "未选择文件"
+            Return
+        End If
+        Status.Content = "正在替换字体"
+        Dim FontStatistic As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)
+        Dim OriginFontStatistic As Dictionary(Of String, Integer) = New Dictionary(Of String, Integer)
+        Dim ObjectNum = PDFDocument.GetNumberOfPdfObjects
+        Dim CurrentObjectNum As Integer = 1
+        Dim ReplaceCounter As Integer = 0
+        While CurrentObjectNum <= ObjectNum
+            Dim CurrentObject = PDFDocument.GetPdfObject(CurrentObjectNum)
+            If CurrentObject IsNot Nothing AndAlso CurrentObject.GetObjectType() = 3 Then
+                Dim Dict As PdfDictionary = CurrentObject
+                If Dict.GetAsName(PdfName.Type) Is PdfName.Font Then
+                    '得到原始的字体名称
+                    Dim FontName = Dict.GetAsName(PdfName.BaseFont).ToString()
+                    '格式化为标准字体名称
+                    FontName = FontName.Substring(FontName.IndexOf("+") + 1)
+                    If FontName = OriginFont.Text Then
+                        Dict.Remove(PdfName.BaseFont)
+                        Dict.Remove(PdfName.FontDescriptor)
+                        Dict.Put(PdfName.BaseFont, New PdfString(NewFont.Text))
+                        ReplaceCounter += 1
+                    End If
+                End If
+            End If
+            CurrentObjectNum += 1
+        End While
+        If ReplaceCounter > 0 Then
+            Status.Content = "替换" + ReplaceCounter.ToString + "处"
+        Else
+            Status.Content = "没有找到需要替换的字体"
+        End If
+    End Sub
 End Class

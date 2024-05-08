@@ -16,6 +16,10 @@
         <Label Content="字体随机前缀长度：" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
         <Label Content="Acrobat默认情况下会添加6字符的随机前缀，但有些脑瘫连着应用了两次就出现了12字符甚至更长的前缀" HorizontalAlignment="Left" Margin="195,63,0,0" VerticalAlignment="Top"/>
         <Button x:Name="Save" Content="保存文件" HorizontalAlignment="Left" Margin="67,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="FontReplace" Content="字体抽取" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="OriginFont" HorizontalAlignment="Left" Margin="67,95,0,0" TextWrapping="Wrap" Text="原始字体" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="NewFont" HorizontalAlignment="Left" Margin="192,95,0,0" TextWrapping="Wrap" Text="替换字体" VerticalAlignment="Top" Width="120"/>
+        <Label Content="内嵌字体有问题？那就把内嵌字体抽走吧" HorizontalAlignment="Left" Margin="312,91,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
