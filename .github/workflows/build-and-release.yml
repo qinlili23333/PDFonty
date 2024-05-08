@@ -34,4 +34,4 @@ jobs:
           prerelease: true
           title: "最新编译版本-Github Actions云构建"
           files: |
-            PDFonty/bin/Release/net7.0-windows/win-x64/publish/PDFonty.exe
+            PDFonty/bin/Release/net8.0-windows7.0/win-x64/publish/PDFonty.exe
