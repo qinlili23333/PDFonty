@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v1
         with:
@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal .\PDFonty\PDFonty.sln
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: PDFonty-Release
           path: PDFonty\bin\Release\net8.0-windows7.0\win-x64\publish\
