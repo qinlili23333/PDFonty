@@ -8,7 +8,7 @@
         Title="PDFonty - 琴梨梨" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
         <Button x:Name="Open" Content="打开文件" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="FileName" Content="尚未选择文件" HorizontalAlignment="Left" Margin="124,7,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="FileName" Content="尚未选择文件" HorizontalAlignment="Left" Margin="181,7,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Status" Content="就绪" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
         <Button x:Name="AntiAcrobat" Content="反Acrobat字体唯一命名" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
         <Label Content="Acrobat的字体唯一命名导致PDF内出现大量重复字体，本功能可用系统字体重新替换节约体积" HorizontalAlignment="Left" Margin="145,35,0,0" VerticalAlignment="Top"/>
@@ -27,6 +27,7 @@
         <Label Content="有时候能解决字体嵌入疑难杂症" HorizontalAlignment="Left" Margin="67,141,0,0" VerticalAlignment="Top"/>
         <Button x:Name="UnembedAll" Content="完全取消字体内嵌" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="AlsoReplaceFont" Content="同时替换字体" HorizontalAlignment="Left" Margin="116,171,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.196,-0.571"/>
+        <Button x:Name="Preview" Content="预览文件" HorizontalAlignment="Left" Margin="124,10,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

@@ -8,10 +8,12 @@ Imports Microsoft.VisualBasic.Logging
 Imports System.Text.RegularExpressions
 Imports iText.IO.Font
 Imports iText.Kernel.Font
+Imports PDFWV2
 
 Class MainWindow
     Dim CurrentFile As String = ""
     Dim PDFDocument As PdfDocument
+    Dim WV2Engine As PDFEngine
     Private Sub Open_Click(sender As Object, e As RoutedEventArgs) Handles Open.Click
         Dim fd As New System.Windows.Forms.OpenFileDialog() With {
                                 .CheckFileExists = True,
@@ -292,5 +294,27 @@ Class MainWindow
         Else
             Status.Content = "没有找到内嵌的字体"
         End If
+    End Sub
+
+    Private Async Sub Preview_Click(sender As Object, e As RoutedEventArgs) Handles Preview.Click
+        If WV2Engine Is Nothing Then
+            Dim Options As PDFWV2Options = New PDFWV2Options() With {
+                .DefaultEngine = Engines.Adobe,
+                .DebugTool = True
+            }
+            Dim Instance = Await PDFWV2Instance.CreateInstance(Options)
+            WV2Engine = Await Instance.CreateEngine()
+        End If
+        If CurrentFile = "" Then
+            Status.Content = "未选择文件"
+            Return
+        End If
+        Dim FileStream = New MemoryStream()
+        Dim Writer = New PdfWriter(FileStream)
+        Writer.SetCloseStream(False)
+        Dim NewPdf = New PdfDocument(Writer)
+        PDFDocument.CopyPagesTo(1, PDFDocument.GetNumberOfPages, NewPdf)
+        NewPdf.Close()
+        WV2Engine.ViewStream(FileStream)
     End Sub
 End Class

@@ -6,6 +6,7 @@
     <RootNamespace>PDFonty</RootNamespace>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
+    <IncludeNativeLibrariesForSelfExtract>True</IncludeNativeLibrariesForSelfExtract>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
@@ -33,6 +34,7 @@
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.1" />
     <PackageReference Include="itext" Version="9.2.0" />
     <PackageReference Include="itext.bouncy-castle-adapter" Version="9.2.0" />
+    <PackageReference Include="Qinlili.PDFWV2" Version="1.0.1" />
   </ItemGroup>
 
 </Project>
