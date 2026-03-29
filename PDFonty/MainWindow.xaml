@@ -1,4 +1,4 @@
-﻿<Window x:Class="MainWindow"
+﻿<Window x:Class="PDFonty.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,27 +7,27 @@
         mc:Ignorable="d"
         Title="PDFonty - 琴梨梨" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
-        <Button x:Name="Open" Content="打开文件" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Open" Content="打开文件" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="Open_Click"/>
         <Label x:Name="FileName" Content="尚未选择文件" HorizontalAlignment="Left" Margin="181,7,0,0" VerticalAlignment="Top"/>
         <Label x:Name="Status" Content="就绪" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
-        <Button x:Name="AntiAcrobat" Content="反Acrobat字体唯一命名" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="AntiAcrobat" Content="反Acrobat字体唯一命名" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Click="AntiAcrobat_Click"/>
         <Label Content="Acrobat的字体唯一命名导致PDF内出现大量重复字体，本功能可用系统字体重新替换节约体积" HorizontalAlignment="Left" Margin="145,35,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="AcroFontLength" HorizontalAlignment="Left" Margin="133,67,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" Width="57"/>
         <Label Content="字体随机前缀长度：" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top"/>
         <Label Content="Acrobat默认情况下会添加6字符的随机前缀，但有些脑瘫连着应用了两次就出现了12字符甚至更长的前缀" HorizontalAlignment="Left" Margin="195,63,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Save" Content="保存文件" HorizontalAlignment="Left" Margin="67,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="FontReplace" Content="字体抽取" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Save" Content="保存文件" HorizontalAlignment="Left" Margin="67,10,0,0" VerticalAlignment="Top" Click="Save_Click"/>
+        <Button x:Name="FontReplace" Content="字体抽取" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Click="FontReplace_Click"/>
         <TextBox x:Name="OriginFont" HorizontalAlignment="Left" Margin="67,95,0,0" TextWrapping="Wrap" Text="原始字体" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="NewFont" HorizontalAlignment="Left" Margin="192,95,0,0" TextWrapping="Wrap" Text="替换字体" VerticalAlignment="Top" Width="120"/>
         <Label Content="内嵌字体有问题？那就把内嵌字体抽走吧" HorizontalAlignment="Left" Margin="317,91,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="FixEncoding" Content="编码修复" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="FixEncoding" Content="编码修复" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top" Click="FixEncoding_Click"/>
         <Label Content="解决显示乱码但复制正常" HorizontalAlignment="Left" Margin="195,116,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="NewEncoding" HorizontalAlignment="Left" Margin="67,120,0,0" TextWrapping="Wrap" Text="CP1252" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="RebuildFont" Content="字体重制" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="RebuildFont" Content="字体重制" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Click="RebuildFont_Click"/>
         <Label Content="有时候能解决字体嵌入疑难杂症" HorizontalAlignment="Left" Margin="67,141,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="UnembedAll" Content="完全取消字体内嵌" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="UnembedAll" Content="完全取消字体内嵌" HorizontalAlignment="Left" Margin="10,169,0,0" VerticalAlignment="Top" Click="UnembedAll_Click"/>
         <CheckBox x:Name="AlsoReplaceFont" Content="同时替换字体" HorizontalAlignment="Left" Margin="116,171,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.196,-0.571"/>
-        <Button x:Name="Preview" Content="预览文件" HorizontalAlignment="Left" Margin="124,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Preview" Content="预览文件" HorizontalAlignment="Left" Margin="124,10,0,0" VerticalAlignment="Top" Click="Preview_Click"/>
 
     </Grid>
 </Window>
